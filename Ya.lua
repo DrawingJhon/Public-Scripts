@@ -1,0 +1,20 @@
+-- Creating panel's objects
+local base = Instance.new("Part", workspace)
+base.CanCollide = false
+base.TopSurface = "Smooth"
+base.BottomSurface = "Smooth"
+base.Material = "ForceField"
+base.Color = Color3.fromRGB(0, 40, 150)
+base.Size = Vector3.new(9, 5, 0.5)
+base.Position = Vector3.new(0, 10, 0)
+base.Massless = true
+local surface = Instance.new("SurfaceGui", base)
+surface.Face = "Front"
+local mainFrame = Instance.new("Frame", surface)
+mainFrame.Size = UDim2.new(1, 0, 1, 0)
+mainFrame.BorderSizePixel = 0
+mainFrame.BackgroundColor3 = Color3.fromRGB(0, 20, 140)
+local weld = Instance.new("Weld", base)
+weld.Part1 = owner.Character.HumanoidRootPart
+weld.Part0 = base
+weld.C1 = CFrame.new(0, 1.5, -4) * CFrame.Angles(0, math.rad(180), 0)

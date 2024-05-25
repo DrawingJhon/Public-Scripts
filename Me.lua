@@ -1,0 +1,9 @@
+local p = Instance.new("Part", workspace)
+local s = Instance.new("SurfaceGui")
+s.Parent = p
+local tl = Instance.new("TextLabel")
+tl.Parent = s
+tl.Text = "NO"
+p.Position = Vector3.new(-12.5, 5.5, 74)
+p.Size = Vector3.new(17, 11, 2)
+p.Anchored = true

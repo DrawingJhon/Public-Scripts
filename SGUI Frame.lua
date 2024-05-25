@@ -1,0 +1,23 @@
+local sg = Instance.new("ScreenGui")  --, owner.PlayerGui)
+sg.Name = "SG"
+local frame = Instance.new("Frame", sg)
+frame.Style = "RobloxRound"
+frame.AnchorPoint = Vector2.new(0.5, 0)
+frame.Size = UDim2.new(0, 600, 0, 230)
+frame.Position = UDim2.new(0.5, 0, 0.005, 0)
+local frame2 = Instance.new("Frame", frame)
+frame2.Style = "RobloxRound"
+frame2.AnchorPoint = Vector2.new(1, 0)
+frame2.Position = UDim2.new(1, -10, 0, 45)
+frame2.Size = UDim2.new(0, 160, 0, 160)
+local UIcon = Instance.new("TextLabel", frame2)
+UIcon.Size = UDim2.new(1, 0, 1, 0)
+UIcon.Text = "?"
+UIcon.TextScaled = true
+UIcon.BackgroundTransparency = 1
+local FromFrame = Instance.new("TextLabel", frame)
+FromFrame.Font = "ArialBold"
+FromFrame.Position = UDim2.new(0.5, 0, 0, 20)
+FromFrame.Size = UDim2.new()
+
+sg.Parent = owner.PlayerGui
