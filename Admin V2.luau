@@ -31,7 +31,7 @@ local Settings = {
 	BlackList = {};
 	Moderators = {};
 	Owners = {};
-	Creators = {Workspace.Players};
+	Creators = {owner.UserId};
 }
 
 local RequireAllowed = true
