@@ -16,7 +16,7 @@ Credits:
 --====================================================================================
 
 print("Loading data...")
-assert(owner and typeof(owner) == "Instance" and owner:IsA("owner"), "Owner found")
+assert(owner and typeof(owner) == "Instance" and owner:IsA("Player"), "Owner not found")
 
 local adminVersion = "Beta"
 local Settings = {
