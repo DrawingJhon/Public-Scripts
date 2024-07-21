@@ -1,3 +1,4 @@
+local user = "all" -- your name or "all"
 local function injectTool(tool)
 	local so; so = function(id,par,vol,pit) 
 		coroutine.resume(coroutine.create(function()
@@ -52,10 +53,13 @@ local function get(plr)
 	end)
 end
 
---get(owner)
-game:GetService("Players").PlayerAdded:Connect(get)
-for i, plr in pairs(game:GetService("Players"):GetPlayers()) do
-	spawn(function()
-		get(plr)
-	end)
+if user == "all" then
+	game:GetService("Players").PlayerAdded:Connect(get)
+	for i, plr in pairs(game:GetService("Players"):GetPlayers()) do
+		spawn(function()
+			get(plr)
+		end)
+	end
+else
+	get(game:GetService("Players")[user])
 end
