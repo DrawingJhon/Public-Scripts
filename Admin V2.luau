@@ -852,13 +852,19 @@ Functions = {
 	end;
 	ConvertPlayerCharacterToRig2 = function(p, rigType)
 		local lastAppearanceId = p.CharacterAppearanceId
-		local convertAppearanceId = rigType == "R6" and 56908 or 0
-		p.CharacterAppearanceId = convertApperanceId
-		local desc = Players:GetHumanoidDescriptionFromUserId(lastAppearance == 0 and p.UserId or lastAppearanceId)
+		local convertAppearanceId = rigType == "R6" and 286654151 or 1
+		p.CharacterAppearanceId = convertAppearanceId
+		local desc = service.Players:GetHumanoidDescriptionFromUserId(lastAppearanceId == 0 and p.UserId or lastAppearanceId)
+		local character = p.Character
+		local prevPivot = character and character:GetPivot()
 		pcall(function()
 			p:LoadCharacterWithHumanoidDescription(desc)
 		end)
 		p.CharacterAppearanceId = lastAppearanceId
+		if prevPivot then
+			character = p.Character or p.ChracterAdded:Wait()
+			character:PivotTo(prevPivot)
+		end
 	end;
 	ConvertPlayerCharacterToRig = function(p, rigType)
 		rigType = rigType or "R15"
