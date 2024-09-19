@@ -1253,6 +1253,10 @@ Functions = {
 		end
 		end
 		end
+	end;
+
+	MakeDoll = function(userId)
+		
 	end
 }
 
@@ -4781,6 +4785,22 @@ addCmd("spoofchat", {"spoof"; "schat"}, {"player"; "message"}, function(speaker,
 	assert(args[2], "Enter a valid message (Argument 2)")
 	for i, v in pairs(service.GetPlayers(args[1], speaker)) do
 		Remote.Send(v, "Function", "Spoof", args[2])
+	end
+end)
+addCmd("doll", {}, {"player/username"; "receiver"}, function(speaker, args)
+	local players = service.GetPlayers(args[1], speaker)
+
+	if #players == 0 then
+		for _, username in args[1]:split(",") do
+			table.insert(players, {
+				UserId = service.Players:GetUserIdFromNameAsync(username),
+				Name = username
+			})
+		end
+	end
+
+	for _, player in pairs(players) do
+		
 	end
 end)
 
