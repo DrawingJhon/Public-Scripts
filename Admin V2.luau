@@ -4619,10 +4619,12 @@ addCmd("ptool", {"playertool"}, {"player"}, function(speaker, args)
 	for i, v in pairs(service.GetPlayers(args.rest, speaker, true)) do
 		local char = v.Character
 		local torso = char and char:findFirstChild("HumanoidRootPart")
+		local humanoid = char and char:FindFirstChildOfClass("Humanoid")
 		if char and torso and not char.Parent:IsA("Tool") then
 			local tool = service.New("Tool", workspace)
 			tool.Name = v.Name
 			local handle = service.New("Part", tool)
+			handle.Massless = true
 			handle.Name = "Handle"
 			handle.CanCollide = false
 			handle.Size = torso.Size
@@ -4641,6 +4643,12 @@ addCmd("ptool", {"playertool"}, {"player"}, function(speaker, args)
 				end
 			end
 			setNetOwner(speaker)
+			tool.Equipped:Connect(function()
+				humanoid.PlatformStand = true
+			end)
+			tool.Unequipped:Connect(function()
+				humanoid.PlatformStand = false
+			end)
 			tool.ChildRemoved:Connect(function(child)
 				if child == char then
 					tool:Destroy()
