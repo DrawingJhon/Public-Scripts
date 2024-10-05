@@ -3568,6 +3568,7 @@ addCmd("unteam", {"removefromteam";"neutral"}, {"player"}, function(speaker, arg
 		v.TeamColor = BrickColor.new(194)
 	end
 end)
+if game.PlaceId ~= 11510416200 then
 addCmd("naked", {"removeclothes";"nude";"undress"}, {"player";"(optional morph)boy/girl"}, function(speaker, args)
 	for i, v in pairs(service.GetPlayers(args[1], speaker, true)) do
 		local gender = args[2] and args[2]:lower()
@@ -3615,6 +3616,7 @@ addCmd("naked", {"removeclothes";"nude";"undress"}, {"player";"(optional morph)b
 		end
 	end
 end)
+end
 addCmd("talk", {"maketalk"}, {"player";"message"}, function(speaker, args)
 	local message = args.rest
 	for i, v in pairs(service.GetPlayers(args[1], speaker)) do
