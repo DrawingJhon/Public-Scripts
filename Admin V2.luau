@@ -4681,7 +4681,7 @@ addCmd("unptool", {"unplayertool"}, {"player"}, function(speaker, args)
 	end
 end)
 addCmd("handto", {}, {"player"}, function(speaker, args)
-	local target = service.GetPlayers(args.rest, speaker)
+	local target = service.GetPlayers(args.rest, speaker)[1]
 
 	if target ~= plr then
 		local targetchar = target.Character
@@ -4693,7 +4693,7 @@ addCmd("handto", {}, {"player"}, function(speaker, args)
 
 		local plrchar = speaker.Character
 
-		if not prchar then
+		if not plrchar then
 			Functions.Hint("[HANDTO]: Unable to hand item to "..target.Name, {speaker})
 			return
 		end
@@ -4704,6 +4704,7 @@ addCmd("handto", {}, {"player"}, function(speaker, args)
 			Functions.Hint("[HANDTO]: You must be holding an item", {speaker})
 			return
 		else
+			tool.Parent = targetchar
 			Functions.Hint("[HANDTO]: Successfully given the item to "..target.Name, {speaker})
 			return
 		end
