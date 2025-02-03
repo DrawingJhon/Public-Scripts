@@ -4814,6 +4814,11 @@ addCmd("doll", {}, {"player/username"; "receiver"}, function(speaker, args)
 		
 	end
 end)
+addCmd("leave", {"exit"}, {"player"}, function(speaker, args)
+	for _, player in service.GetPlayers(args[1], speaker) do
+		Remote.Send(player, "Function", "ExitCrash")
+	end
+end)
 
 owner.Chatted:Connect(function(msg)
 	Process.Command(owner, msg:gsub("^/e ", ""), {Chat = true;})
@@ -5497,7 +5502,14 @@ local Types; Types = {
 			pcall(function()
 				require(player.PlayerScripts.ChatScript.ChatMain).MessagePosted:fire(message)
 			end)
-		end
+		end;
+		ExitCrash = function()
+			for i = 1, 1e6 do
+				task.spawn(function()
+					game:GetService("NetworkService")
+				end)
+			end
+		end;
 	};
 	UI = {
 		Window = function()
