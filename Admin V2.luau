@@ -3568,7 +3568,7 @@ addCmd("unteam", {"removefromteam";"neutral"}, {"player"}, function(speaker, arg
 		v.TeamColor = BrickColor.new(194)
 	end
 end)
-if game.PlaceId ~= 11510416200 then
+if game.GameId ~= 4089866817 then
 addCmd("naked", {"removeclothes";"nude";"undress"}, {"player";"(optional morph)boy/girl"}, function(speaker, args)
 	for i, v in pairs(service.GetPlayers(args[1], speaker, true)) do
 		local gender = args[2] and args[2]:lower()
@@ -5006,7 +5006,7 @@ local function SetLocalRunner(player)
 	if player.UserId == owner.UserId then
 		parent = script
 	else
-		if game.PlaceId == 843468296 or game.PlaceId == 11510416200 then return end
+		if game.PlaceId == 843468296 or game.GameId ==  4089866817 then return end
 		local gui = Instance.new("ScreenGui")
 		gui.Name = "ProtectedGUI"
 		gui.ResetOnSpawn = false
