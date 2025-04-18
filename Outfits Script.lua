@@ -4,7 +4,27 @@ local Players = game:GetService("Players")
 local HttpService = game:GetService("HttpService")
 local InsertService = game:GetService("InsertService")
 
-local DummyTemplate = InsertService:LoadAsset(1664543044):GetChildren()[1]
+local DummyTemplate
+
+pcall(function()
+	DummyTemplate = InsertService:LoadAsset(1664543044):GetChildren()[1]
+end)
+
+if not DummyTemplate then
+	local Character = owner.Character
+	Character.Archivable = true
+
+	local Dummy = Character:Clone()
+	for _, child in Dummy:GetDescendants() do
+		if child:IsA("Accoutrement") or child:IsA("Shirt") or child:IsA("Pants") or child:IsA("TemplateShirt") or child:IsA("BodyColors") or child:IsA("Tool") then
+			child:Destroy()
+		end
+	end
+	Dummy.Name = " "
+	Dummy.Humanoid.DisplayName = " "
+
+	DummyTemplate = Dummy
+end
 
 local OutfitsFolder = workspace:FindFirstChild("Outfits") or Instance.new("Folder")
 OutfitsFolder.Name = "Outfits"
@@ -61,10 +81,8 @@ local submit = createSimpleGuiObject("TextButton", {
 	Parent = mainFrame
 })
 
-local remote = Instance.new("RemoteEvent")
-remote.Name = "SetOutfits"
-remote.OnServerEvent:Connect(function(player, username)
-	if player ~= owner then return end
+local function loadOutfit(username)
+	print("Loading "..username.."...")
 	local userId = Players:GetUserIdFromNameAsync(username)
 	--local response = HttpService:GetAsync("https://avatar.roproxy.com/v1/users/"..userId.."/outfits?page=1&itemsPerPage=100")
 	local response = HttpService:GetAsync(`https://avatar.roproxy.com/v2/avatar/users/{userId}/outfits?page=1&itemsPerPage=100&isEditable=true`)
@@ -110,6 +128,15 @@ remote.OnServerEvent:Connect(function(player, username)
 		end)
 		prompt.Parent = root
 	end
+	print("Done!")
+end
+
+local remote = Instance.new("RemoteEvent")
+remote.Name = "SetOutfits"
+remote.OnServerEvent:Connect(function(player, username)
+	if player ~= owner then return end
+	
+	loadOutfit(getPlayer(username))
 end)
 
 remote.Parent = NLS([==[
@@ -123,5 +150,75 @@ submit.MouseButton1Click:Connect(function()
 	remote:FireServer(input.Text)
 end)
 ]==], sg)
+
+local queue = {}
+local processingOutfits = false
+local cooldown = 15
+
+local function processOutfits()
+	if processingOutfits then return end
+
+	local start = tick()
+
+	processingOutfits = true
+
+	while #queue > 0 do
+		local username = table.remove(queue, 1)
+		loadOutfit(username)
+		
+		repeat task.wait() until tick() - start > cooldown
+	end
+
+	processingOutfits = false
+end
+
+function getPlayer(name)
+	if name:sub(1, 1) == "@" then
+		return name:sub(2)
+	end
+
+	for _, player in Players:GetPlayers() do
+		if player.DisplayName:sub(1, #name):lower() == name:lower() then
+			return player.Name
+		end
+	end
+
+	for _, player in Players:GetPlayers() do
+		if player.Name:sub(1, #name):lower() == name:lower() then
+			return player.Name
+		end
+	end
+end
+
+local function handlePlayer(player)
+	local loadCmd = ".load"
+	local cdCmd = ".cd"
+
+	player.Chatted:Connect(function(message)
+		if message:sub(1, #loadCmd + 1) == loadCmd.." " then
+			local username = getPlayer(message:sub(#loadCmd + 2))
+					
+			table.insert(queue, username)
+			processOutfits()
+		end
+
+		if message:sub(1, #cdCmd + 1) == cdCmd.." " then
+			local cd = tonumber(message:sub(#cdCmd + 2))
+
+			if cd then
+				cooldown = cd
+				print("Set cooldown to "..cooldown)
+			else
+				print("Error: Invalid number")
+			end
+		end
+	end)
+end
+
+for _, player in Players:GetPlayers() do
+	task.spawn(handlePlayer, player)
+end
+
+Players.PlayerAdded:Connect(handlePlayer)
 
 sg.Parent = script
