@@ -3804,6 +3804,7 @@ addCmd("title", {"bgui"}, {"player";"text"}, function(speaker, args)
 		Font = "SourceSansBold";
 		LineHeight = 1;
 		Text = args.rest;
+		RichText = true;
 		TextColor3 = Color3.new(1, 1, 1);
 		TextScaled = true;
 		TextStrokeColor3 = Color3.new(50, 0, 0);
